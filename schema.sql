@@ -1,0 +1,45 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS facilities CASCADE;
+DROP TABLE IF EXISTS comments CASCADE;
+
+CREATE TABLE IF NOT EXISTS users (
+  role_id INT NOT NULL,
+  id SERIAL NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS facilities (
+  id SERIAL NOT NULL,
+  user_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  url VARCHAR(255) NOT NULL,
+  image_path VARCHAR(255) NOT NULL,
+  prefecture VARCHAR(255) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  phone_number VARCHAR(255) NOT NULL,
+  temperature INT NOT NULL,
+  fee INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  CONSTRAINT facilities_user_id_fk FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+  id SERIAL NOT NULL,
+  user_id INT NOT NULL,
+  facility_id INT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  content VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  CONSTRAINT comments_user_id_fk FOREIGN KEY (user_id) REFERENCES users (id),
+  CONSTRAINT comments_facilitiy_id_fk FOREIGN KEY (facility_id) REFERENCES facilities (id)
+);
